@@ -68,9 +68,9 @@ with ui.layout_columns():
             penguins_df,
             x="bill_length_mm",
             title="Penguins Bill Length Histogram",
-            color_discrete_sequence=["orange"],
+            color_discrete_sequence=["purple"],
         )
-        fig.update_traces(marker_line_color="black", marker_line_width=2)
+        fig.update_traces(marker_line_color="yellow", marker_line_width=2)
         return fig
 
     @render_plotly
@@ -86,44 +86,7 @@ with ui.layout_columns():
             title=f"Penguins {selected_attribute} Histogram",
             color_discrete_sequence=["black"], 
         )
-        fig.update_traces(marker_line_color="white", marker_line_width=2)
+        fig.update_traces(marker_line_color="red", marker_line_width=2)
         return fig
 
 with ui.card(full_screen=True):
-
-  
-    @render_plotly
-    def density_plot():
-        filtered_penguins = filtered_penguins()
-        filtered_penguins()["species"].isin(input.selected_species_list())
-        
-        fig = px.density_contour(
-            filtered_penguins,
-            
-            x="bill_length_mm",
-            y="bill_depth_mm",
-            color="species",
-            title="Density Plot: Bill Length vs Bill Depth by Species",
-            labels={
-                "bill_length_mm": "Bill Length (mm)",
-                "bill_depth_mm": "Bill Depth (mm)"
-            }
-        )
-        return fig
-
-with ui.layout_columns():
-    with ui.card():
-        @render.plot(alt="Seaborn Histogram")
-        def plot():
-            ax=sns.histplot(data=penguins_df,x="flipper_length_mm",bins=input.seaborn_bin_count())
-            ax.set_title("Seaborn: Palmer Penguins")
-            ax.set_xlabel("flipper_length_mm")
-            ax.set_ylabel("Count")
-            return ax
-
-@reactive.calc
-def filtered_data():
-    filtered_penguins = penguins_df[
-        penguins_df["species"].isin(input.selected_species_list())
-    ]
-    return filtered_penguins
